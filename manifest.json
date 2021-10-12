@@ -1,6 +1,19 @@
 {
-    "name": "Getting Started Example",
-    "description": "Build an Extension!",
+    "name": "Tabby",
+    "description": "Organize yours tabs!",
     "version": "1.0",
-    "manifest_version": 3
-  }
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": ["storage", "activeTab", "scripting", "declarativeContent", "tabs"],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "icons": {
+        "16": "/images/tabby.png",
+        "32": "/images/tabby.png",
+        "48": "/images/tabby.png",
+        "128": "/images/tabby.png"
+    }
+}
