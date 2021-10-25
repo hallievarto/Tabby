@@ -30,9 +30,14 @@ function logTabs(tabs) {
     li.innerText = tab.title;
     list.appendChild(li);
   }
-// })
-  // }
 }
+
+// function makeBigger() {
+//   let button = document.getElementById("goHome");
+//   // button.onclick(window.resizeTo(400,600));
+//   button.onclick(chrome.windows.update(windowId, { state: "fullscreen" })
+  
+// }
 
 function onError(error) {
   console.log(`Error: ${error}`);
@@ -40,3 +45,12 @@ function onError(error) {
 
 let querying = chrome.tabs.query({currentWindow: true});
 querying.then(logTabs, onError);
+
+let homeButton = document.getElementById("goHome");
+if(homeButton){
+  console.log("HI");
+  console.log(chrome.windows.getCurrent());
+  homeButton.addEventListener("click", async () => {
+    chrome.windows.update(chrome.windows.getCurrent(), { state: "fullscreen" });
+  });
+}
