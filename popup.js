@@ -51,6 +51,11 @@ if(homeButton){
   console.log("HI");
   console.log(chrome.windows.getCurrent());
   homeButton.addEventListener("click", async () => {
-    chrome.windows.update(chrome.windows.getCurrent(), { state: "fullscreen" });
+    document.body.style.width = "800px"
+    document.body.style.height = "600px"
+    // this part is trying to switch to the home page of the extension. right now you have to click twice on the tabby extension to get it to swtich
+    // console.log(chrome.action.getPopup(chrome.tabs.getCurrent()))
+    // chrome.action.setPopup({popup: "home.html"});
+    // console.log(chrome.action.getPopup(chrome.tabs.getCurrent()))
   });
 }
