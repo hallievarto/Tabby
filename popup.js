@@ -59,3 +59,27 @@ if(homeButton){
     // console.log(chrome.action.getPopup(chrome.tabs.getCurrent()))
   });
 }
+
+let newGroupButton = document.getElementById("newGroup");
+if (newGroupButton) {
+  newGroupButton.addEventListener("click", async () => {
+    var txtNewInputBox = document.createElement('text');
+    var newSubmitButton = document.createElement('submit');
+    txtNewInputBox.innerHTML = "<input type='text' id='newInputBox'>";
+    newSubmitButton.innerHTML = "<input type='submit' id='groupSubmitButton' value='Submit'>"
+
+    document.getElementById("newInputGroup").appendChild(txtNewInputBox);
+    document.getElementById("newInputGroup").appendChild(newSubmitButton);
+  });
+}
+
+let submitButton = document.getElementById("groupSubmitButton");
+if (submitButton) {
+  submitButton.addEventListener("click", async () => {
+    var groupName = document.getElementById("newInputBox").value;
+    var newGroupLabel = document.createElement('h3');
+
+    newGroupLabel.innerHTML = groupName;
+    document.getElementById("groupBox").appendChild(newGroupLabel);
+  });
+}
