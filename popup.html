@@ -1,17 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="popup.css">
   </head>
-  <body>
-    <h1>Open tabs</h1>
-    <ul id="myList"></ul>
-    <button type="button" id="goHome"> HOME </button>
-    <div>
-      <input type="button" value="CREATE NEW GROUP" id="newGroup"></button>
-    </div>
-    <form id="newInputGroup"></form>
-    <div id="groupBox"></div>
+  <body id="body" style="width: 800px; height: 600px;">
+    <section class="container">
+     
+      <!-- this is the left side of the screen -->
+      <div id="col-1">
+        <h1>Tabby</h1>
+        <h1>Open tabs</h1>
+        <ul id="myList"></ul>
+        <button id="createGroup"> CREATE NEW GROUP</button>
+        <div id="textbox">  </div>
+
+        <!-- didn't work on this button yet -->
+        <div>
+          <input type="button" value="ADD TO CURR GROUP"></button>
+        </div>
+      </div>
+
+
+        
+     
+      <!-- this is the right side of the screen -->
+      <div id="col-2">
+        <h1>Groups</h1>
+        <ul id="groupNames"></ul>
+      </div>
+     
+    </section>
+    
+   
     
     <script src="popup.js"></script>
   </body>

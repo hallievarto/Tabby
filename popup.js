@@ -32,12 +32,6 @@ function logTabs(tabs) {
   }
 }
 
-// function makeBigger() {
-//   let button = document.getElementById("goHome");
-//   // button.onclick(window.resizeTo(400,600));
-//   button.onclick(chrome.windows.update(windowId, { state: "fullscreen" })
-  
-// }
 
 function onError(error) {
   console.log(`Error: ${error}`);
@@ -46,40 +40,53 @@ function onError(error) {
 let querying = chrome.tabs.query({currentWindow: true});
 querying.then(logTabs, onError);
 
-let homeButton = document.getElementById("goHome");
-if(homeButton){
-  console.log("HI");
-  console.log(chrome.windows.getCurrent());
-  homeButton.addEventListener("click", async () => {
-    document.body.style.width = "800px"
-    document.body.style.height = "600px"
-    // this part is trying to switch to the home page of the extension. right now you have to click twice on the tabby extension to get it to swtich
-    // console.log(chrome.action.getPopup(chrome.tabs.getCurrent()))
-    // chrome.action.setPopup({popup: "home.html"});
-    // console.log(chrome.action.getPopup(chrome.tabs.getCurrent()))
-  });
+createGroup.addEventListener("click", async() =>{
+  let groupNameText = document.createElement('text')
+  let groupNameSubmit = document.createElement('button')
+
+  groupNameText.innerHTML = "<input type='text' id='GName' placeholder='type group name' />"
+  groupNameSubmit.innerHTML = "<div id='NG'> Submit </div>"
+
+  document.getElementById("textbox").appendChild(groupNameText)
+  document.getElementById("textbox").appendChild(groupNameSubmit)
+  groupNameSubmit.onclick = submitNewGroup
+})
+
+function submitNewGroup(){
+  var name = document.getElementById("GName").value;
+  let li = document.createElement("li");
+  li.innerText = name;
+  groupNames.appendChild(li);
 }
 
-let newGroupButton = document.getElementById("newGroup");
-if (newGroupButton) {
-  newGroupButton.addEventListener("click", async () => {
-    var txtNewInputBox = document.createElement('text');
-    var newSubmitButton = document.createElement('submit');
-    txtNewInputBox.innerHTML = "<input type='text' id='newInputBox'>";
-    newSubmitButton.innerHTML = "<input type='submit' id='groupSubmitButton' value='Submit'>"
 
-    document.getElementById("newInputGroup").appendChild(txtNewInputBox);
-    document.getElementById("newInputGroup").appendChild(newSubmitButton);
-  });
-}
+// let newGroupButton = document.getElementById("newGroup");
+// if (newGroupButton) {
+//   newGroupButton.addEventListener("click", async () => {
+//     var txtNewInputBox = document.createElement('text');
+//     var newSubmitButton = document.createElement('button');
+//     txtNewInputBox.innerHTML = "<input type='text' id='newInputBox'>";
+//     newSubmitButton.innerHTML = "<input type='button' id='newGroupSubmitButton' value='Submit'>"
 
-let submitButton = document.getElementById("groupSubmitButton");
-if (submitButton) {
-  submitButton.addEventListener("click", async () => {
-    var groupName = document.getElementById("newInputBox").value;
-    var newGroupLabel = document.createElement('h3');
+//     console.log("made it to first listener");  
 
-    newGroupLabel.innerHTML = groupName;
-    document.getElementById("groupBox").appendChild(newGroupLabel);
-  });
-}
+  
+//     document.getElementById("newInputGroup").appendChild(txtNewInputBox);
+//     document.getElementById("newInputGroup").appendChild(newSubmitButton);
+//   });
+// }
+
+// let submitButton = document.getElementById("newGroupSubmitButton");
+// console.log(submitButton);
+// if (submitButton) {
+//   console.log("yo");
+//   submitButton.addEventListener("click", async () => {
+//     var groupName = document.getElementById("newInputBox").value;
+//     var newGroupLabel = document.createElement('h3');
+
+//     console.log(groupName);
+//     console.log('hey its me');
+//     newGroupLabel.innerHTML = groupName;
+//     document.getElementById("groupBox").appendChild(newGroupLabel);
+//   });
+// }
