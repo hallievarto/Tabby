@@ -41,6 +41,7 @@ let querying = chrome.tabs.query({currentWindow: true});
 querying.then(logTabs, onError);
 
 createGroup.addEventListener("click", async() =>{
+  console.log("make new")
   let groupNameText = document.createElement('text')
   let groupNameSubmit = document.createElement('button')
 
@@ -57,6 +58,32 @@ function submitNewGroup(){
   let li = document.createElement("li");
   li.innerText = name;
   groupNames.appendChild(li);
+}
+
+addTo.addEventListener("click", async() =>{
+  var list = document.getElementById("groupNames");
+  var listoflists = list.getElementsByTagName("li");
+  console.log(list);
+  console.log(listoflists);
+  for(var i = 0; i < listoflists.length; i++) {
+    let link = document.createElement("a");
+    link.innerText = listoflists[i].innerText;
+    document.getElementById("myDropdown").appendChild(link);
+  }
+  document.getElementById("myDropdown").classList.toggle("show");
+})
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
 }
 
 
