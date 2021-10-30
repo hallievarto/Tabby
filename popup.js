@@ -26,6 +26,7 @@ function logTabs(tabs) {
   for (let tab of tabs) {
     // tab.url requires the `tabs` permission or a matching host permission.
     // alert(tab.url);
+    currTabs.push(tab.url)
     let li = document.createElement("li");
     li.innerText = tab.title;
     list.appendChild(li);
@@ -37,6 +38,7 @@ function onError(error) {
   console.log(`Error: ${error}`);
 }
 
+let currTabs = []
 let querying = chrome.tabs.query({currentWindow: true});
 querying.then(logTabs, onError);
 
@@ -55,9 +57,32 @@ createGroup.addEventListener("click", async() =>{
 
 function submitNewGroup(){
   var name = document.getElementById("GName").value;
+  chrome.storage.sync.set({name: currTabs});
+  chrome.storage.sync.get("name", function (obj) {
+    console.log(obj);
+  });
   let li = document.createElement("li");
+  let openButton = document.createElement("button")
+  openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
   li.innerText = name;
   groupNames.appendChild(li);
+  groupNames.appendChild(openButton)
+
+  openButton.addEventListener("click", openTabs, false)
+}
+
+function openTabs(){
+  window.open(currTabs[0], "_blank");
+  if (currTabs.length > 0){
+    for (let i=1; i < currTabs.length; i++) {
+      // tab.url requires the `tabs` permission or a matching host permission.
+      // alert(tab.url);
+      chrome.tabs.create({url: currTabs[i]})
+      // let li = document.createElement("li");
+      // li.innerText = tab.title;
+      // list.appendChild(li);
+    }
+  }
 }
 
 addTo.addEventListener("click", async() =>{
