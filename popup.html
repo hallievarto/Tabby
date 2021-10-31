@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Zen+Kaku+Gothic+New&display=swap" rel="stylesheet">
   <head>
     <link rel="stylesheet" href="popup.css">
   </head>
-  <body id="body" style="width: 800px; height: 600px;">
+  <body id="body">
     <section class="container">
      
       <!-- this is the left side of the screen -->
       <div id="col-1">
         <h1>Tabby</h1>
-        <h1>Open tabs</h1>
+        <h2>Open tabs:</h2>
         <ul id="myList"></ul>
-        <button id="createGroup"> CREATE NEW GROUP</button>
+        <button id="createGroup" class="dropbtn">Create New Group</button>
         <div id="textbox">  </div>
 
         <!-- didn't work on this button yet -->
         <div class="dropdown">
-          <button id="addTo" class="dropbtn">ADD TO CURR GROUP</button>
+          <button id="addTo" class="dropbtn">Add To Existing Group</button>
             <div id="myDropdown" class="dropdown-content">
             </div>
         </div>
@@ -27,7 +30,8 @@
      
       <!-- this is the right side of the screen -->
       <div id="col-2">
-        <h1>Groups</h1>
+        <h1> </h1>
+        <h2>Groups</h2>
         <ul id="groupNames"></ul>
       </div>
      
