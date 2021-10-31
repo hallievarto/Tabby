@@ -28,7 +28,17 @@ function onError(error) {
 // !! This is how you get all things in chrome storage !!
  chrome.storage.local.get(null, function(items) {
   console.log(items);
-  // console.log(items[0]);
+  for (key in items){
+    // console.log(key);
+    let li = document.createElement("li");
+    li.innerText = key;
+    let openButton = document.createElement("button")
+    openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
+    groupNames.appendChild(li);
+    groupNames.appendChild(openButton)
+    openButton.addEventListener("click", openTabs, false)
+
+  }
   
 });
 
