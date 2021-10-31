@@ -66,12 +66,11 @@ createGroup.addEventListener("click", async() =>{
   let groupNameText = document.createElement('text')
   let groupNameSubmit = document.createElement('button')
 
-  groupNameText.innerHTML = "<input type='text' id='GName' placeholder='type group name' />"
-  groupNameSubmit.innerHTML = "<div id='NG'> Submit </div>"
+  // groupNameText.innerHTML = "<input type='text' id='GName' placeholder='type group name' />"
+  // groupNameSubmit.innerHTML = "<button id='NG'> Submit </button>"
 
-  document.getElementById("textbox").appendChild(groupNameText)
-  document.getElementById("textbox").appendChild(groupNameSubmit)
-  groupNameSubmit.onclick = submitNewGroup
+  document.getElementById("textbox").innerHTML = "<input type='text' id='GName' placeholder='type group name' /> <button id='NG'> Submit </button>"
+  document.getElementById("NG").onclick = submitNewGroup
 })
 
 function submitNewGroup(){
