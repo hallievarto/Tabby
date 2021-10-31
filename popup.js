@@ -25,6 +25,12 @@ function onError(error) {
 //  })
 
 
+// !! This is how you print everything in storage !!
+// chrome.storage.local.get(null, function(items) {
+//   console.log(items);
+// });
+
+
 // !! This is how you get all things in chrome storage !!
  chrome.storage.local.get(null, function(items) {
   console.log(items);
@@ -32,11 +38,18 @@ function onError(error) {
     // console.log(key);
     let li = document.createElement("li");
     li.innerText = key;
+    li.id = key;
     let openButton = document.createElement("button")
+    let deleteButton = document.createElement("button")
     openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
+    deleteButton.innerHTML = "<button id=deleteGroup> Delete Group </button>"
     groupNames.appendChild(li);
-    groupNames.appendChild(openButton)
+    li.appendChild(openButton)
+    li.appendChild(deleteButton)
     openButton.addEventListener("click", openTabs, false)
+    deleteButton.addEventListener("click", function(){
+      deleteGroup(key)
+    });
 
   }
   
@@ -73,15 +86,23 @@ function submitNewGroup(){
   });
   let li = document.createElement("li");
   let openButton = document.createElement("button")
+  let deleteButton = document.createElement("button")
   openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
+  deleteButton.innerHTML = "<button id=deleteGroup> Delete Group </button>"
   li.innerText = tabName;
+  li.id = tabName;
   groupNames.appendChild(li);
-  groupNames.appendChild(openButton)
+  li.appendChild(openButton)
+  li.appendChild(deleteButton)
 
   openButton.addEventListener("click", openTabs, false)
+  deleteButton.addEventListener("click", function(){
+    deleteGroup(tabName)
+  });
 }
 
 function openTabs(){
+  // alert("HI");
   window.open(currTabs[0], "_blank");
   if (currTabs.length > 0){
     for (let i=1; i < currTabs.length; i++) {
@@ -93,6 +114,19 @@ function openTabs(){
       // list.appendChild(li);
     }
   }
+}
+
+function deleteGroup(group){
+  console.log(group)
+  let element = document.getElementById(group);
+  element.remove()
+
+  chrome.storage.local.remove(group,function(){
+    var error = chrome.runtime.lastError;
+       if (error) {
+           console.error(error);
+       }
+   })
 }
 
 // add to current tab group button 
