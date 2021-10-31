@@ -85,7 +85,7 @@ function openTabs(){
   }
 }
 
-// add to current tab group button 
+// add to current tab group dropdown 
 addTo.addEventListener("click", async() =>{
   var list = document.getElementById("groupNames");
   var listoflists = list.getElementsByTagName("li");
@@ -96,13 +96,41 @@ addTo.addEventListener("click", async() =>{
       console.log('group on drop down menu')
       let link = document.createElement("a");
       link.setAttribute('id', listoflists[i].innerText);
-      link.setAttribute('href', '#');
+      link.setAttribute('class', 'existingGroups');
       link.innerText = listoflists[i].innerText;
       document.getElementById("myDropdown").appendChild(link);
     }
   }
   document.getElementById("myDropdown").classList.toggle("show");
 })
+
+// listener to add to a curr group
+document.body.addEventListener( 'click', function ( event ) {
+  if( event.target.className == 'existingGroups' ) {
+    console.log('Saving to ' + event.target.id);
+    var tabGroupName =  event.target.id;
+    chrome.storage.local.get(tabGroupName, function(links) {
+      for(var i = 0; i < currTabs.length; i++){
+        var exists = false;
+        for (var j = 0; j < links[tabGroupName].length; j++){
+            if(currTabs[i] == links[tabGroupName][j]) {
+              console.log(currTabs[i] + " already exists in this group");
+              exists = true;
+            }
+        }
+        if(!exists) {
+          console.log("Adding " + currTabs[i] + " to group");
+          // links.push(currTabs[i]);
+        }
+      }
+      var save = {};
+      save[tabGroupName] = links;
+      chrome.storage.local.set(save, function(){
+        console.log(tabGroupName)
+      });
+    });
+  };
+} );
 
 // dropdown button functionality 
 window.onclick = function(event) {
