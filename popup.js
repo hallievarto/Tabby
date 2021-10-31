@@ -51,9 +51,9 @@ function onError(error) {
     li.appendChild(deleteButton)
     console.log(items[group].length);
     for (i = 0; i < items[group].length; i++ ) {
-      
-      console.log(items[group[i]].value);
-      //document.getElementById("tabNames").innerHTML = link;
+      let link = document.createElement("text")
+      link.innerHTML = items[group][i]
+      document.getElementById("tabNames").appendChild(link)
     }
     openButton.addEventListener("click", openTabs, false)
     deleteButton.addEventListener("click", function(){
