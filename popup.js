@@ -1,25 +1,3 @@
-// // Initialize button with user's preferred color
-// let changeColor = document.getElementById("changeColor");
-// chrome.storage.sync.get("color", ({ color }) => {
-//   changeColor.style.backgroundColor = color;
-// });
-
-// // When the button is clicked, inject setPageBackgroundColor into current page
-// changeColor.addEventListener("click", async () => {
-//     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-//     chrome.scripting.executeScript({
-//       target: { tabId: tab.id },
-//       function: setPageBackgroundColor,
-//     });
-// });
-  
-// // The body of this function will be executed as a content script inside the
-// // current page
-// function setPageBackgroundColor() {
-//     chrome.storage.sync.get("color", ({ color }) => {
-//       document.body.style.backgroundColor = color;
-//     });
-// }
 
 function logTabs(tabs) {
   let list = document.getElementById("myList");
@@ -37,6 +15,22 @@ function logTabs(tabs) {
 function onError(error) {
   console.log(`Error: ${error}`);
 }
+
+// !! This is how you clear chrome storage !!
+// chrome.storage.local.clear(function() {
+//   var error = chrome.runtime.lastError;
+//     if (error) {
+//       console.error(error);
+//     }
+//  })
+
+
+// !! This is how you get all things in chrome storage !!
+ chrome.storage.local.get(null, function(items) {
+  console.log(items);
+  // console.log(items[0]);
+  
+});
 
 let currTabs = []
 let querying = chrome.tabs.query({currentWindow: true});
@@ -56,15 +50,21 @@ createGroup.addEventListener("click", async() =>{
 })
 
 function submitNewGroup(){
-  var name = document.getElementById("GName").value;
-  chrome.storage.sync.set({name: currTabs});
-  chrome.storage.sync.get("name", function (obj) {
+  var tabName = document.getElementById("GName").value;
+  console.log(tabName)
+  
+  var save = {}
+  save[tabName] = currTabs
+  chrome.storage.local.set(save, function(){
+    console.log(tabName)
+  });
+  chrome.storage.local.get(save, function (obj) {
     console.log(obj);
   });
   let li = document.createElement("li");
   let openButton = document.createElement("button")
   openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
-  li.innerText = name;
+  li.innerText = tabName;
   groupNames.appendChild(li);
   groupNames.appendChild(openButton)
 
@@ -85,19 +85,26 @@ function openTabs(){
   }
 }
 
+// add to current tab group button 
 addTo.addEventListener("click", async() =>{
   var list = document.getElementById("groupNames");
   var listoflists = list.getElementsByTagName("li");
-  console.log(list);
-  console.log(listoflists);
   for(var i = 0; i < listoflists.length; i++) {
-    let link = document.createElement("a");
-    link.innerText = listoflists[i].innerText;
-    document.getElementById("myDropdown").appendChild(link);
+    if (document.body.contains(document.getElementById(listoflists[i].innerText))) {
+      console.log('group already made')
+    } else {
+      console.log('group on drop down menu')
+      let link = document.createElement("a");
+      link.setAttribute('id', listoflists[i].innerText);
+      link.setAttribute('href', '#');
+      link.innerText = listoflists[i].innerText;
+      document.getElementById("myDropdown").appendChild(link);
+    }
   }
   document.getElementById("myDropdown").classList.toggle("show");
 })
 
+// dropdown button functionality 
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -110,35 +117,3 @@ window.onclick = function(event) {
     }
   }
 }
-
-
-// let newGroupButton = document.getElementById("newGroup");
-// if (newGroupButton) {
-//   newGroupButton.addEventListener("click", async () => {
-//     var txtNewInputBox = document.createElement('text');
-//     var newSubmitButton = document.createElement('button');
-//     txtNewInputBox.innerHTML = "<input type='text' id='newInputBox'>";
-//     newSubmitButton.innerHTML = "<input type='button' id='newGroupSubmitButton' value='Submit'>"
-
-//     console.log("made it to first listener");  
-
-  
-//     document.getElementById("newInputGroup").appendChild(txtNewInputBox);
-//     document.getElementById("newInputGroup").appendChild(newSubmitButton);
-//   });
-// }
-
-// let submitButton = document.getElementById("newGroupSubmitButton");
-// console.log(submitButton);
-// if (submitButton) {
-//   console.log("yo");
-//   submitButton.addEventListener("click", async () => {
-//     var groupName = document.getElementById("newInputBox").value;
-//     var newGroupLabel = document.createElement('h3');
-
-//     console.log(groupName);
-//     console.log('hey its me');
-//     newGroupLabel.innerHTML = groupName;
-//     document.getElementById("groupBox").appendChild(newGroupLabel);
-//   });
-// }
