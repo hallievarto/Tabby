@@ -41,14 +41,16 @@ function onError(error) {
     li.id = key;
     let openButton = document.createElement("button")
     let deleteButton = document.createElement("button")
-    openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
-    deleteButton.innerHTML = "<button id=deleteGroup> Delete Group </button>"
+    // openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
+    // deleteButton.innerHTML = "<button id=deleteGroup> Delete Group </button>"
+    openButton.innerHTML = "<button> Open Tabs </button>"
+    deleteButton.innerHTML = "<button> Delete Group </button>"
     groupNames.appendChild(li);
     li.appendChild(openButton)
     li.appendChild(deleteButton)
     openButton.addEventListener("click", openTabs, false)
     deleteButton.addEventListener("click", function(){
-      deleteGroup(key)
+      deleteGroup(li.id)
     });
 
   }
@@ -87,8 +89,10 @@ function submitNewGroup(){
   let li = document.createElement("li");
   let openButton = document.createElement("button")
   let deleteButton = document.createElement("button")
-  openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
-  deleteButton.innerHTML = "<button id=deleteGroup> Delete Group </button>"
+  // openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
+  // deleteButton.innerHTML = "<button id=deleteGroup> Delete Group </button>"
+  openButton.innerHTML = "<button> Open Tabs </button>"
+  deleteButton.innerHTML = "<button> Delete Group </button>"
   li.innerText = tabName;
   li.id = tabName;
   groupNames.appendChild(li);
@@ -97,7 +101,7 @@ function submitNewGroup(){
 
   openButton.addEventListener("click", openTabs, false)
   deleteButton.addEventListener("click", function(){
-    deleteGroup(tabName)
+    deleteGroup(li.id)
   });
 }
 
