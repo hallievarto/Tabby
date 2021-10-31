@@ -34,20 +34,27 @@ function onError(error) {
 // !! This is how you get all things in chrome storage !!
  chrome.storage.local.get(null, function(items) {
   console.log(items);
-  for (key in items){
+  for (group in items){
     // console.log(key);
     let li = document.createElement("li");
-    li.innerText = key;
-    li.id = key;
+    li.innerText = group;
+    li.id = group;
+
+    // create open and close buttons
     let openButton = document.createElement("button")
     let deleteButton = document.createElement("button")
-    // openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
-    // deleteButton.innerHTML = "<button id=deleteGroup> Delete Group </button>"
-    openButton.innerHTML = "<button> Open Tabs </button>"
-    deleteButton.innerHTML = "<button> Delete Group </button>"
+    openButton.innerHTML = "Open Tabs"
+    deleteButton.innerHTML = "Delete Group"
+    
     groupNames.appendChild(li);
     li.appendChild(openButton)
     li.appendChild(deleteButton)
+    console.log(items[group].length);
+    for (i = 0; i < items[group].length; i++ ) {
+      
+      console.log(items[group[i]].value);
+      //document.getElementById("tabNames").innerHTML = link;
+    }
     openButton.addEventListener("click", openTabs, false)
     deleteButton.addEventListener("click", function(){
       deleteGroup(li.id)
@@ -63,11 +70,6 @@ querying.then(logTabs, onError);
 
 createGroup.addEventListener("click", async() =>{
   console.log("make new")
-  let groupNameText = document.createElement('text')
-  let groupNameSubmit = document.createElement('button')
-
-  // groupNameText.innerHTML = "<input type='text' id='GName' placeholder='type group name' />"
-  // groupNameSubmit.innerHTML = "<button id='NG'> Submit </button>"
 
   document.getElementById("textbox").innerHTML = "<input type='text' id='GName' placeholder='type group name' /> <button id='NG'> Submit </button>"
   document.getElementById("NG").onclick = submitNewGroup
