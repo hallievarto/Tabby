@@ -9,7 +9,7 @@ h1 {
   font-family: 'Zen Kaku Gothic New', sans-serif;
   font-weight: 300;
   color: #363636;
-  font-size: 30px;
+  font-size: 35px;
   padding-top: 0;
   padding-left: 10px;
   padding-bottom: 10px;
@@ -27,7 +27,7 @@ ul {
 
 h2 {
   font-family: 'Zen Kaku Gothic New', sans-serif;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 400;
   padding-left: 10px;
   display: inline-block;
@@ -40,7 +40,7 @@ h2 {
 }
 
 #myGroups {
-  padding-top: 42px;
+  padding-top: 50px;
 }
 
 #col-1 {
@@ -138,14 +138,34 @@ h2 {
     margin: 10px 0px 10px 0px;
     height: auto;
     width: 300px;
-    padding: 10px;
+    padding: 10px 10px 15px 10px;
     border-radius: 6px;
     font-size: 10px;
     font-weight: 300;
+    position: relative;
   }
 
   .myGroupName {
-    font-size: 15px;
+    font-size: 18px;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
+    margin: 0;
+  }
+
+  #openDel {
+    background-color: #FEDEBE;
+    color: #363636;
+    border: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: center;
+    margin: 0px 5px 5px 0px;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+    height: 20px;
+    border-radius: 6px;
+    left: 50%;
+    transform: translate(+50%);
   }

@@ -48,6 +48,8 @@ function onError(error) {
     // create open and close buttons
     let openButton = document.createElement("button")
     let deleteButton = document.createElement("button")
+    openButton.setAttribute('id', 'openDel')
+    deleteButton.setAttribute('id', 'openDel')
     openButton.innerHTML = "Open Tabs"
     deleteButton.innerHTML = "Delete Group"
     
