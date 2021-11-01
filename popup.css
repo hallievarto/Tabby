@@ -133,7 +133,7 @@ h2 {
     overflow-wrap: break-word;
   }
 
-  #myBoxes {
+  .myBoxes {
     font-family: 'Open Sans', sans-serif;
     background-color:#17AAAA;
     margin: 10px 0px 10px 0px;

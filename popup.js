@@ -37,8 +37,8 @@ function onError(error) {
   for (group in items){
     // create a new div for an entire group
     let myNewBox = document.createElement("div")
-    myNewBox.setAttribute('id', 'myBoxes');
-    myNewBox.setAttribute('class', group)
+    myNewBox.setAttribute('class', 'myBoxes');
+    myNewBox.setAttribute('id', group)
 
     // create the title to the box and append it to the new div
     let myName = document.createElement("p")
@@ -67,10 +67,10 @@ function onError(error) {
     document.getElementById("myGroups").appendChild(myNewBox);
 
     openButton.addEventListener("click", function(){
-      openTabs(group)
+      openTabs(myNewBox.id)
     });
     deleteButton.addEventListener("click", function(){
-      deleteGroup(group)
+      deleteGroup(myNewBox.id)
     });
 
   }
@@ -113,8 +113,8 @@ function submitNewGroup(){
   li.appendChild(deleteButton)
 
   openButton.addEventListener("click", function(){
-    openTabs(group)
-});
+    openTabs(li.id)
+  });
   deleteButton.addEventListener("click", function(){
     deleteGroup(li.id)
   });
@@ -133,6 +133,7 @@ function openTabs(tabName){
 function deleteGroup(group){
   console.log(group)
   let element = document.getElementById(group);
+  // let element = document.getElementsByClassName(group);
   console.log(element)
   element.remove()
 
