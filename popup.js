@@ -53,7 +53,6 @@ function onError(error) {
     
     li.appendChild(openButton)
     li.appendChild(deleteButton)
-    console.log(items[group].length);
     for (i = 0; i < items[group].length; i++ ) {
       let link = document.createElement("div")
       link.innerHTML = items[group][i]
@@ -145,16 +144,16 @@ function deleteGroup(group){
 // add to current tab group button 
 addTo.addEventListener("click", async() =>{
   var list = document.getElementById("groupNames");
-  var listoflists = list.getElementsByTagName("li");
-  for(var i = 0; i < listoflists.length; i++) {
-    if (document.body.contains(document.getElementById(listoflists[i].innerText))) {
+  var children = list.children;
+  for(var i = 0; i < children.length; i++) {
+    if (document.body.contains(document.getElementById(children[i].innerText))) {
       console.log('group already made')
     } else {
       console.log('group on drop down menu')
       let link = document.createElement("a");
-      link.setAttribute('id', listoflists[i].innerText);
+      link.setAttribute('id', children[i].innerText);
       link.setAttribute('class', 'existingGroups');
-      link.innerText = listoflists[i].innerText;
+      link.innerText = children[i].id;
       document.getElementById("myDropdown").appendChild(link);
     }
   }
@@ -164,11 +163,12 @@ addTo.addEventListener("click", async() =>{
 // listener to add to a curr group
 document.body.addEventListener( 'click', function ( event ) {
   if( event.target.className == 'existingGroups' ) {
-    console.log('Saving to ' + event.target.id);
-    var tabGroupName =  event.target.id;
+    var tabGroupName =  event.target.innerText;
+    console.log('Saving to ' + tabGroupName);
     chrome.storage.local.get(tabGroupName, function(links) {
       for(var i = 0; i < currTabs.length; i++){
         var exists = false;
+        console.log(links);
         for (var j = 0; j < links[tabGroupName].length; j++){
             if(currTabs[i] == links[tabGroupName][j]) {
               console.log(currTabs[i] + " already exists in this group");
@@ -177,14 +177,9 @@ document.body.addEventListener( 'click', function ( event ) {
         }
         if(!exists) {
           console.log("Adding " + currTabs[i] + " to group");
-          // links.push(currTabs[i]);
+          links[tabGroupName][tabGroupName].push(currTabs[i]);
         }
       }
-      var save = {};
-      save[tabGroupName] = links;
-      chrome.storage.local.set(save, function(){
-        console.log(tabGroupName)
-      });
     });
   };
 } );
