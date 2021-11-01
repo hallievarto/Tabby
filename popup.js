@@ -220,6 +220,15 @@ document.body.addEventListener( 'click', function ( event ) {
           chrome.storage.local.set(save, function(){
             console.log('re adding ' + tabGroupName);
           });
+
+          let link = document.createElement("div")
+          link.innerHTML = currTabs[i]
+          link.setAttribute('id', 'myLinks');
+          // myNewBox.appendChild(link)
+          console.log(tabGroupName)
+          document.getElementById(tabGroupName).appendChild(link)
+
+
         }
       }
     });
