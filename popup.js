@@ -35,40 +35,42 @@ function onError(error) {
  chrome.storage.local.get(null, function(items) {
   console.log(items);
   for (group in items){
-    // console.log(key);
+    // create a new div for an entire group
+    let myNewBox = document.createElement("div")
+    myNewBox.setAttribute('id', 'myBoxes');
+    myNewBox.setAttribute('class', group)
+
+    // create the title to the box and append it to the new div
     let myName = document.createElement("p")
-    myName.setAttribute('class', 'myGroupName')
+    myName.setAttribute('id', 'myGroupName')
     myName.innerHTML = group
+    myNewBox.appendChild(myName);
     console.log(group)
 
-    let li = document.createElement("div");
-    li.setAttribute('id', 'myBoxes');
-    myName.appendChild(li)
-
-    // create open and close buttons
+    // create open and close buttons amnd append them to new div
     let openButton = document.createElement("button")
     let deleteButton = document.createElement("button")
     openButton.setAttribute('id', 'openDel')
     deleteButton.setAttribute('id', 'openDel')
     openButton.innerHTML = "Open Tabs"
     deleteButton.innerHTML = "Delete Group"
-    
-    li.appendChild(openButton)
-    li.appendChild(deleteButton)
+    myNewBox.appendChild(openButton)
+    myNewBox.appendChild(deleteButton)
+
     for (i = 0; i < items[group].length; i++ ) {
       let link = document.createElement("div")
       link.innerHTML = items[group][i]
       link.setAttribute('id', 'myLinks');
-      li.appendChild(link)
+      myNewBox.appendChild(link)
     }
 
-    document.getElementById("myGroups").appendChild(myName);
+    document.getElementById("myGroups").appendChild(myNewBox);
 
     openButton.addEventListener("click", function(){
       openTabs(group)
     });
     deleteButton.addEventListener("click", function(){
-    deleteGroup(li.id)
+      deleteGroup(group)
     });
 
   }
@@ -106,7 +108,7 @@ function submitNewGroup(){
   deleteButton.innerHTML = "<button> Delete Group </button>"
   li.innerText = tabName;
   li.id = tabName;
-  groupNames.appendChild(li);
+  //groupNames.appendChild(li);
   li.appendChild(openButton)
   li.appendChild(deleteButton)
 
@@ -131,6 +133,7 @@ function openTabs(tabName){
 function deleteGroup(group){
   console.log(group)
   let element = document.getElementById(group);
+  console.log(element)
   element.remove()
 
   chrome.storage.local.remove(group,function(){
@@ -143,17 +146,24 @@ function deleteGroup(group){
 
 // add to current tab group button 
 addTo.addEventListener("click", async() =>{
-  var list = document.getElementById("groupNames");
-  var children = list.children;
-  for(var i = 0; i < children.length; i++) {
-    if (document.body.contains(document.getElementById(children[i].innerText))) {
+  var list = document.getElementById("myGroups");
+  var second = list.children;
+  var theBox = second.children;
+  // var children = document.getElementById("myGroupName");
+  
+  //console.log(second)
+  //console.log(theBox)
+  for(var i = 0; i < second.length; i++) {
+    console.log('this is where to look')
+    console.log(second[i].firstChild.innerText)
+    if (document.body.contains(document.getElementById(second[i].firstChild.innerText))) {
       console.log('group already made')
     } else {
       console.log('group on drop down menu')
       let link = document.createElement("a");
-      link.setAttribute('id', children[i].innerText);
+      link.setAttribute('id', second[i].firstChild.innerText);
       link.setAttribute('class', 'existingGroups');
-      link.innerText = children[i].id;
+      link.innerHTML = second[i].firstChild.innerText;
       document.getElementById("myDropdown").appendChild(link);
     }
   }
@@ -164,6 +174,8 @@ addTo.addEventListener("click", async() =>{
 document.body.addEventListener( 'click', function ( event ) {
   if( event.target.className == 'existingGroups' ) {
     var tabGroupName =  event.target.innerText;
+    console.log('this is what ')
+    console.log(event.target.innerText)
     console.log('Saving to ' + tabGroupName);
     chrome.storage.local.get(tabGroupName, function(links) {
       for(var i = 0; i < currTabs.length; i++){
