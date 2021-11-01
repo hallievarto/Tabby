@@ -36,9 +36,14 @@ function onError(error) {
   console.log(items);
   for (group in items){
     // console.log(key);
-    let li = document.createElement("li");
-    li.innerText = group;
-    li.id = group;
+    let myName = document.createElement("p")
+    myName.setAttribute('class', 'myGroupName')
+    myName.innerHTML = group
+    console.log(group)
+
+    let li = document.createElement("div");
+    li.setAttribute('id', 'myBoxes');
+    myName.appendChild(li)
 
     // create open and close buttons
     let openButton = document.createElement("button")
@@ -46,18 +51,21 @@ function onError(error) {
     openButton.innerHTML = "Open Tabs"
     deleteButton.innerHTML = "Delete Group"
     
-    groupNames.appendChild(li);
     li.appendChild(openButton)
     li.appendChild(deleteButton)
     console.log(items[group].length);
     for (i = 0; i < items[group].length; i++ ) {
-      let link = document.createElement("text")
+      let link = document.createElement("div")
       link.innerHTML = items[group][i]
-      document.getElementById("tabNames").appendChild(link)
+      link.setAttribute('id', 'myLinks');
+      li.appendChild(link)
     }
+
+    document.getElementById("myGroups").appendChild(myName);
+
     openButton.addEventListener("click", openTabs, false)
     deleteButton.addEventListener("click", function(){
-      deleteGroup(li.id)
+    deleteGroup(li.id)
     });
 
   }
