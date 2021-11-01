@@ -111,7 +111,7 @@ function submitNewGroup(){
   myName.setAttribute('id', 'myGroupName')
   myName.innerHTML = tabName
   myNewBox.appendChild(myName);
-  console.log(group)
+  // console.log(group)
 
   // create open and close buttons amnd append them to new div
   let openButton = document.createElement("button")
