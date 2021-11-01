@@ -100,24 +100,45 @@ function submitNewGroup(){
   chrome.storage.local.get(save, function (obj) {
     console.log(obj);
   });
-  let li = document.createElement("li");
+
+  // create a new div for an entire group
+  let myNewBox = document.createElement("div")
+  myNewBox.setAttribute('class', 'myBoxes');
+  myNewBox.setAttribute('id', tabName)
+
+  // create the title to the box and append it to the new div
+  let myName = document.createElement("p")
+  myName.setAttribute('id', 'myGroupName')
+  myName.innerHTML = tabName
+  myNewBox.appendChild(myName);
+  console.log(group)
+
+  // create open and close buttons amnd append them to new div
   let openButton = document.createElement("button")
   let deleteButton = document.createElement("button")
+  openButton.setAttribute('id', 'openDel')
+  deleteButton.setAttribute('id', 'openDel')
+  openButton.innerHTML = "Open Tabs"
+  deleteButton.innerHTML = "Delete Group"
+  myNewBox.appendChild(openButton)
+  myNewBox.appendChild(deleteButton)
 
-  openButton.innerHTML = "<button> Open Tabs </button>"
-  deleteButton.innerHTML = "<button> Delete Group </button>"
-  li.innerText = tabName;
-  li.id = tabName;
-  //groupNames.appendChild(li);
-  li.appendChild(openButton)
-  li.appendChild(deleteButton)
+  for (i = 0; i < currTabs.length; i++ ) {
+    let link = document.createElement("div")
+    link.innerHTML = currTabs[i]
+    link.setAttribute('id', 'myLinks');
+    myNewBox.appendChild(link)
+  }
+
+  document.getElementById("myGroups").appendChild(myNewBox);
 
   openButton.addEventListener("click", function(){
-    openTabs(li.id)
+    openTabs(myNewBox.id)
   });
   deleteButton.addEventListener("click", function(){
-    deleteGroup(li.id)
+    deleteGroup(myNewBox.id)
   });
+
 }
 
 function openTabs(tabName){
@@ -157,12 +178,12 @@ addTo.addEventListener("click", async() =>{
   for(var i = 0; i < second.length; i++) {
     console.log('this is where to look')
     console.log(second[i].firstChild.innerText)
-    if (document.body.contains(document.getElementById(second[i].firstChild.innerText))) {
+    if (document.body.contains(document.getElementById(second[i].firstChild.innerText + 'List'))) {
       console.log('group already made')
     } else {
       console.log('group on drop down menu')
       let link = document.createElement("a");
-      link.setAttribute('id', second[i].firstChild.innerText);
+      link.setAttribute('id', second[i].firstChild.innerText + 'List');
       link.setAttribute('class', 'existingGroups');
       link.innerHTML = second[i].firstChild.innerText;
       document.getElementById("myDropdown").appendChild(link);
