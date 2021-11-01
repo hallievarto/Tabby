@@ -54,7 +54,9 @@ function onError(error) {
       link.innerHTML = items[group][i]
       document.getElementById("tabNames").appendChild(link)
     }
-    openButton.addEventListener("click", openTabs, false)
+    openButton.addEventListener("click", function(){
+        openTabs(group)
+    });
     deleteButton.addEventListener("click", function(){
       deleteGroup(li.id)
     });
@@ -89,8 +91,7 @@ function submitNewGroup(){
   let li = document.createElement("li");
   let openButton = document.createElement("button")
   let deleteButton = document.createElement("button")
-  // openButton.innerHTML = "<button id=openTabs> Open Tabs </button>"
-  // deleteButton.innerHTML = "<button id=deleteGroup> Delete Group </button>"
+
   openButton.innerHTML = "<button> Open Tabs </button>"
   deleteButton.innerHTML = "<button> Delete Group </button>"
   li.innerText = tabName;
@@ -99,25 +100,22 @@ function submitNewGroup(){
   li.appendChild(openButton)
   li.appendChild(deleteButton)
 
-  openButton.addEventListener("click", openTabs, false)
+  openButton.addEventListener("click", function(){
+    openTabs(group)
+});
   deleteButton.addEventListener("click", function(){
     deleteGroup(li.id)
   });
 }
 
-function openTabs(){
-  // alert("HI");
-  window.open(currTabs[0], "_blank");
-  if (currTabs.length > 0){
-    for (let i=1; i < currTabs.length; i++) {
-      // tab.url requires the `tabs` permission or a matching host permission.
-      // alert(tab.url);
-      chrome.tabs.create({url: currTabs[i]})
-      // let li = document.createElement("li");
-      // li.innerText = tab.title;
-      // list.appendChild(li);
+function openTabs(tabName){
+  chrome.storage.local.get(tabName, function(items) {
+    if (items[tabName].length > 0){
+      for (let i=0; i < items[tabName].length; i++) {
+        chrome.tabs.create({url: items[tabName][i]})
+      }
     }
-  }
+  });
 }
 
 function deleteGroup(group){
@@ -169,12 +167,20 @@ document.body.addEventListener( 'click', function ( event ) {
         }
         if(!exists) {
           console.log("Adding " + currTabs[i] + " to group");
-          links[tabGroupName][tabGroupName].push(currTabs[i]);
+          links[tabGroupName].push(currTabs[i]);
+          chrome.storage.local.remove(tabGroupName, function(){
+            console.log('deleting');
+          });
+          var save = {};
+          save[tabGroupName] = links[tabGroupName];
+          chrome.storage.local.set(save, function(){
+            console.log('re adding ' + tabGroupName);
+          });
         }
       }
     });
   };
-} );
+});
 
 // dropdown button functionality 
 window.onclick = function(event) {
