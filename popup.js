@@ -8,6 +8,11 @@ function logTabs(tabs) {
     let li = document.createElement("li");
     li.innerText = tab.title;
     list.appendChild(li);
+
+    master['currTabUrls'].push(tab.url)
+    master['currTabTitles'].push(tab.title)
+
+    console.log(master)
   }
 }
 
@@ -57,9 +62,9 @@ function onError(error) {
     myNewBox.appendChild(openButton)
     myNewBox.appendChild(deleteButton)
 
-    for (i = 0; i < items[group].length; i++ ) {
+    for (i = 0; i < items[group]['titles'].length; i++ ) {
       let link = document.createElement("div")
-      link.innerHTML = items[group][i]
+      link.innerHTML = items[group]['titles'][i]
       link.setAttribute('id', 'myLinks');
       myNewBox.appendChild(link)
     }
@@ -77,7 +82,11 @@ function onError(error) {
   
 });
 
+let master = {}
+master['currTabUrls'] = []
+master['currTabTitles'] = []
 let currTabs = []
+let nameList = []
 let querying = chrome.tabs.query({currentWindow: true});
 querying.then(logTabs, onError);
 
@@ -89,63 +98,82 @@ createGroup.addEventListener("click", async() =>{
 })
 
 function submitNewGroup(){
+
   var tabName = document.getElementById("GName").value;
-  console.log(tabName)
-  
-  var save = {}
-  save[tabName] = currTabs
-  chrome.storage.local.set(save, function(){
-    console.log(tabName)
-  });
-  chrome.storage.local.get(save, function (obj) {
-    console.log(obj);
-  });
-
-  // create a new div for an entire group
-  let myNewBox = document.createElement("div")
-  myNewBox.setAttribute('class', 'myBoxes');
-  myNewBox.setAttribute('id', tabName)
-
-  // create the title to the box and append it to the new div
-  let myName = document.createElement("p")
-  myName.setAttribute('id', 'myGroupName')
-  myName.innerHTML = tabName
-  myNewBox.appendChild(myName);
-  // console.log(group)
-
-  // create open and close buttons amnd append them to new div
-  let openButton = document.createElement("button")
-  let deleteButton = document.createElement("button")
-  openButton.setAttribute('id', 'openDel')
-  deleteButton.setAttribute('id', 'openDel')
-  openButton.innerHTML = "Open Tabs"
-  deleteButton.innerHTML = "Delete Group"
-  myNewBox.appendChild(openButton)
-  myNewBox.appendChild(deleteButton)
-
-  for (i = 0; i < currTabs.length; i++ ) {
-    let link = document.createElement("div")
-    link.innerHTML = currTabs[i]
-    link.setAttribute('id', 'myLinks');
-    myNewBox.appendChild(link)
+  let tempName = tabName
+  if (tempName.trim().length === 0){
+    alert("Invalid name! Please enter a name with at least 1 character.");
   }
+  else if(nameList.includes(tabName)){
+    alert("Group name already exists! Please create a unique group name or add to an existing group.");
+  }
+  else{
 
-  document.getElementById("myGroups").appendChild(myNewBox);
+    nameList.push(tabName);
+    console.log(tabName)
 
-  openButton.addEventListener("click", function(){
-    openTabs(myNewBox.id)
-  });
-  deleteButton.addEventListener("click", function(){
-    deleteGroup(myNewBox.id)
-  });
+    
+    var save = {}
+    // save[tabName] = currTabs
+    save_dict = {}
+    save_dict['urls'] = master['currTabUrls']
+    save_dict['titles'] = master['currTabTitles']
+    save[tabName] = save_dict
+    chrome.storage.local.set(save, function(){
+      console.log(tabName)
+    });
+    chrome.storage.local.get(save, function (obj) {
+      console.log(obj);
+    });
+
+    // create a new div for an entire group
+    let myNewBox = document.createElement("div")
+    myNewBox.setAttribute('class', 'myBoxes');
+    myNewBox.setAttribute('id', tabName)
+
+    // create the title to the box and append it to the new div
+    let myName = document.createElement("p")
+    myName.setAttribute('id', 'myGroupName')
+    myName.innerHTML = tabName
+    myNewBox.appendChild(myName);
+    // console.log(group)
+
+    // create open and close buttons amnd append them to new div
+    let openButton = document.createElement("button")
+    let deleteButton = document.createElement("button")
+    openButton.setAttribute('id', 'openDel')
+    deleteButton.setAttribute('id', 'openDel')
+    openButton.innerHTML = "Open Tabs"
+    deleteButton.innerHTML = "Delete Group"
+    myNewBox.appendChild(openButton)
+    myNewBox.appendChild(deleteButton)
+
+    for (i = 0; i < master['currTabTitles'].length; i++ ) {
+      let link = document.createElement("div")
+      link.innerHTML = master['currTabTitles'][i]
+      link.setAttribute('id', 'myLinks');
+      myNewBox.appendChild(link)
+    }
+
+    document.getElementById("myGroups").appendChild(myNewBox);
+
+    openButton.addEventListener("click", function(){
+      openTabs(myNewBox.id)
+    });
+    deleteButton.addEventListener("click", function(){
+      deleteGroup(myNewBox.id)
+    });
+  }
+  
 
 }
 
 function openTabs(tabName){
   chrome.storage.local.get(tabName, function(items) {
-    if (items[tabName].length > 0){
-      for (let i=0; i < items[tabName].length; i++) {
-        chrome.tabs.create({url: items[tabName][i]})
+    console.log(items)
+    if (items[tabName]['urls'].length > 0){
+      for (let i=0; i < items[tabName]['urls'].length; i++) {
+        chrome.tabs.create({url: items[tabName]['urls'][i]})
       }
     }
   });
@@ -200,29 +228,40 @@ document.body.addEventListener( 'click', function ( event ) {
     console.log(event.target.innerText)
     console.log('Saving to ' + tabGroupName);
     chrome.storage.local.get(tabGroupName, function(links) {
-      for(var i = 0; i < currTabs.length; i++){
+      console.log(links)
+      for(var i = 0; i < master['currTabUrls'].length; i++){
         var exists = false;
         console.log(links);
-        for (var j = 0; j < links[tabGroupName].length; j++){
-            if(currTabs[i] == links[tabGroupName][j]) {
-              console.log(currTabs[i] + " already exists in this group");
+        for (var j = 0; j < links[tabGroupName]['urls'].length; j++){
+            if(master['currTabUrls'][i] == links[tabGroupName]['urls'][j]) {
+              console.log(master['currTabUrls'][i] + " already exists in this group");
               exists = true;
             }
         }
         if(!exists) {
-          console.log("Adding " + currTabs[i] + " to group");
-          links[tabGroupName].push(currTabs[i]);
+          console.log("Adding " + master['currTabUrls'][i] + " to group");
+          links[tabGroupName]['urls'].push(master['currTabUrls'][i]);
+          links[tabGroupName]['titles'].push(master['currTabTitles'][i]);
           chrome.storage.local.remove(tabGroupName, function(){
             console.log('deleting');
           });
+
           var save = {};
-          save[tabGroupName] = links[tabGroupName];
-          chrome.storage.local.set(save, function(){
+          temp_dict = {}
+          temp_dict['urls'] = links[tabGroupName]['urls']
+          temp_dict['titles'] = links[tabGroupName]['titles']
+          save[tabGroupName] = temp_dict
+          chrome.storage.local.set(save, function(obj){
             console.log('re adding ' + tabGroupName);
+            console.log(obj)
+          });
+          chrome.storage.local.get(save, function (obj) {
+            console.log(obj);
           });
 
+
           let link = document.createElement("div")
-          link.innerHTML = currTabs[i]
+          link.innerHTML = master['currTabTitles'][i]
           link.setAttribute('id', 'myLinks');
           // myNewBox.appendChild(link)
           console.log(tabGroupName)
