@@ -165,6 +165,7 @@ function submitNewGroup(){
         let link = document.createElement("div")
         link.innerHTML = master['currTabTitles'][i]
         link.setAttribute('id', 'myLinks');
+        // link.setAttribute('href', master['currTabUrls'][i])
         myNewBox.appendChild(link)
       }
     }

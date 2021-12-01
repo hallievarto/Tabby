@@ -133,6 +133,10 @@ h2 {
     overflow-wrap: break-word;
   }
 
+  /* a {
+    overflow-wrap: break-word;
+  } */
+
   #myList {
     overflow-wrap: break-word;
   }
