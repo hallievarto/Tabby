@@ -5,9 +5,17 @@ function logTabs(tabs) {
     // tab.url requires the `tabs` permission or a matching host permission.
     // alert(tab.url);
     currTabs.push(tab.url)
-    let li = document.createElement("li");
-    li.innerText = tab.title;
-    list.appendChild(li);
+    let myDiv = document.createElement("div");
+    let myLink = document.createElement("input");
+    let myLabel = document.createElement("label");
+    myLink.setAttribute('type', 'checkbox');
+    myLink.setAttribute('id', tab.title);
+    myLabel.setAttribute('id', tab.title);
+    myLabel.innerText = tab.title;
+
+    myDiv.appendChild(myLink);
+    myDiv.appendChild(myLabel);
+    list.appendChild(myDiv);
 
     master['currTabUrls'].push(tab.url)
     master['currTabTitles'].push(tab.title)
@@ -149,10 +157,13 @@ function submitNewGroup(){
     myNewBox.appendChild(deleteButton)
 
     for (i = 0; i < master['currTabTitles'].length; i++ ) {
-      let link = document.createElement("div")
-      link.innerHTML = master['currTabTitles'][i]
-      link.setAttribute('id', 'myLinks');
-      myNewBox.appendChild(link)
+      let cb = document.getElementById(master['currTabTitles'][i]);
+      if (cb.checked) {
+        let link = document.createElement("div")
+        link.innerHTML = master['currTabTitles'][i]
+        link.setAttribute('id', 'myLinks');
+        myNewBox.appendChild(link)
+      }
     }
 
     document.getElementById("myGroups").appendChild(myNewBox);
@@ -230,44 +241,45 @@ document.body.addEventListener( 'click', function ( event ) {
     chrome.storage.local.get(tabGroupName, function(links) {
       console.log(links)
       for(var i = 0; i < master['currTabUrls'].length; i++){
-        var exists = false;
-        console.log(links);
-        for (var j = 0; j < links[tabGroupName]['urls'].length; j++){
-            if(master['currTabUrls'][i] == links[tabGroupName]['urls'][j]) {
-              console.log(master['currTabUrls'][i] + " already exists in this group");
-              exists = true;
-            }
-        }
-        if(!exists) {
-          console.log("Adding " + master['currTabUrls'][i] + " to group");
-          links[tabGroupName]['urls'].push(master['currTabUrls'][i]);
-          links[tabGroupName]['titles'].push(master['currTabTitles'][i]);
-          chrome.storage.local.remove(tabGroupName, function(){
-            console.log('deleting');
-          });
-
-          var save = {};
-          temp_dict = {}
-          temp_dict['urls'] = links[tabGroupName]['urls']
-          temp_dict['titles'] = links[tabGroupName]['titles']
-          save[tabGroupName] = temp_dict
-          chrome.storage.local.set(save, function(obj){
-            console.log('re adding ' + tabGroupName);
-            console.log(obj)
-          });
-          chrome.storage.local.get(save, function (obj) {
-            console.log(obj);
-          });
-
-
-          let link = document.createElement("div")
-          link.innerHTML = master['currTabTitles'][i]
-          link.setAttribute('id', 'myLinks');
-          // myNewBox.appendChild(link)
-          console.log(tabGroupName)
-          document.getElementById(tabGroupName).appendChild(link)
-
-
+        let cb = document.getElementById(master['currTabTitles'][i]);
+        if (cb.checked) {
+          var exists = false;
+          console.log(links);
+          for (var j = 0; j < links[tabGroupName]['urls'].length; j++){
+              if(master['currTabUrls'][i] == links[tabGroupName]['urls'][j]) {
+                console.log(master['currTabUrls'][i] + " already exists in this group");
+                exists = true;
+              }
+          }
+          if(!exists) {
+            console.log("Adding " + master['currTabUrls'][i] + " to group");
+            links[tabGroupName]['urls'].push(master['currTabUrls'][i]);
+            links[tabGroupName]['titles'].push(master['currTabTitles'][i]);
+            chrome.storage.local.remove(tabGroupName, function(){
+              console.log('deleting');
+            });
+  
+            var save = {};
+            temp_dict = {}
+            temp_dict['urls'] = links[tabGroupName]['urls']
+            temp_dict['titles'] = links[tabGroupName]['titles']
+            save[tabGroupName] = temp_dict
+            chrome.storage.local.set(save, function(obj){
+              console.log('re adding ' + tabGroupName);
+              console.log(obj)
+            });
+            chrome.storage.local.get(save, function (obj) {
+              console.log(obj);
+            });
+  
+  
+            let link = document.createElement("div")
+            link.innerHTML = master['currTabTitles'][i]
+            link.setAttribute('id', 'myLinks');
+            // myNewBox.appendChild(link)
+            console.log(tabGroupName)
+            document.getElementById(tabGroupName).appendChild(link)
+          }
         }
       }
     });
