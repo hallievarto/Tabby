@@ -9,6 +9,7 @@ function logTabs(tabs) {
     let myLink = document.createElement("input");
     let myLabel = document.createElement("label");
     myLink.setAttribute('type', 'checkbox');
+    myLink.setAttribute('name', 'checkbox');
     myLink.setAttribute('id', tab.title);
     myLabel.setAttribute('id', tab.title);
     myLabel.innerText = tab.title;
@@ -299,3 +300,25 @@ window.onclick = function(event) {
     }
   }
 }
+
+window.onclick = function(event) {
+  if (!event.target.matches('selectAll')) {
+    let stuff = document.getElementsByName('checkbox')
+    for (var i = 0; i < stuff.length; i++) {
+      if (stuff[i].type == 'checkbox') {
+        stuff[i].checked = true;
+      }
+    }
+  }
+}
+
+// window.onclick = function(event) {
+//   if (event.target.matches('deselectAll')) {
+//     let stuff = document.getElementsByName('checkbox')
+//     for (var i = 0; i < stuff.length; i++) {
+//       if (stuff[i].type == 'checkbox') {
+//         stuff[i].checked = false;
+//       }
+//     }
+//   }
+// }
