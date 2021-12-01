@@ -60,6 +60,8 @@ function onError(error) {
     myName.innerHTML = group
     myNewBox.appendChild(myName);
     console.log(group)
+    console.log("CHECK IF THIS WORKS")
+    nameList.push(group)
 
     // create open and close buttons amnd append them to new div
     let openButton = document.createElement("button")
@@ -204,6 +206,14 @@ function deleteGroup(group){
            console.error(error);
        }
    })
+
+   
+   for (var i = 0; i < nameList.length; ++i){
+     if (nameList[i] == group){
+       console.log("MATCH");
+       nameList.splice(i,1);
+     }
+   }
 }
 
 // add to current tab group button 
