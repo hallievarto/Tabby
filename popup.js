@@ -301,8 +301,8 @@ window.onclick = function(event) {
   }
 }
 
-window.onclick = function(event) {
-  if (!event.target.matches('selectAll')) {
+document.body.addEventListener( 'click', function ( event ) {
+  if (event.target.className == 'selectAll') {
     let stuff = document.getElementsByName('checkbox')
     for (var i = 0; i < stuff.length; i++) {
       if (stuff[i].type == 'checkbox') {
@@ -310,15 +310,15 @@ window.onclick = function(event) {
       }
     }
   }
-}
+});
 
-// window.onclick = function(event) {
-//   if (event.target.matches('deselectAll')) {
-//     let stuff = document.getElementsByName('checkbox')
-//     for (var i = 0; i < stuff.length; i++) {
-//       if (stuff[i].type == 'checkbox') {
-//         stuff[i].checked = false;
-//       }
-//     }
-//   }
-// }
+document.body.addEventListener( 'click', function ( event ) {
+  if (event.target.className == 'deselectAll') {
+    let stuff = document.getElementsByName('checkbox')
+    for (var i = 0; i < stuff.length; i++) {
+      if (stuff[i].type == 'checkbox') {
+        stuff[i].checked = false;
+      }
+    }
+  }
+});
