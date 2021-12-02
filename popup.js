@@ -92,7 +92,7 @@ function onError(error) {
     document.getElementById("myGroups").appendChild(myNewBox);
 
     settings.addEventListener("click", function(){
-      settingsOptions()
+      settingsOptions(group)
     });
 
     openButton.addEventListener("click", function(){
@@ -194,7 +194,7 @@ function submitNewGroup(){
     document.getElementById("myGroups").appendChild(myNewBox);
 
     settings.addEventListener("click", function(){
-      settingsOptions()
+      settingsOptions(tabname)
     });
 
     openButton.addEventListener("click", function(){
@@ -208,24 +208,47 @@ function submitNewGroup(){
 
 }
 
-function settingsOptions(){
-  const curLinks = document.getElementsByClassName('myLinks');
+function settingsOptions(tabname){
+  const group = document.getElementById(tabname);
+  const curLinks = document.getElementById(tabname).getElementsByClassName('myLinks');
   console.log(curLinks)
   for(var i = 0; i < curLinks.length; i++){
-    let trash = document.createElement("input");
-    trash.setAttribute('id', 'trash');
-    trash.setAttribute('type', 'image');
-    trash.setAttribute('src', 'images/trash.png');
-    curLinks[i].appendChild(trash);
+    let trashIcon = document.createElement("input");
+    trashIcon.setAttribute('class', 'trash');
+    trashIcon.setAttribute('id', 'trash');
+    trashIcon.setAttribute('type', 'image');
+    trashIcon.setAttribute('src', 'images/trash.png');
+    curLinks[i].appendChild(trashIcon);
+    const tabname = curLinks[i].innerHTML;
+    trashIcon.addEventListener("click", function(){
+      deleteItem(tabname);
+    })
   }
-  
-  trash.addEventListener("click", function(){
-    deleteItem();
+  let done = document.createElement("button");
+  done.setAttribute('id', 'donebut')
+  done.innerHTML = "DONE";
+  group.appendChild(done);
+
+  done.addEventListener("click", function(){
+    doneSettings(tabname);
   })
 }
 
-function deleteItem(){
-  console.log('to do');
+function deleteItem(item){
+  console.log('deleting...');
+  console.log(item);
+  
+}
+
+function doneSettings(tabname){
+  const group = document.getElementById(tabname);
+  const curLinks = document.getElementById(tabname).getElementsByClassName('myLinks');
+  console.log(curLinks);
+  for(var i = 0; i < curLinks.length; i++){
+    const trashcan = document.curLinks[i].getElementByID('trash');
+    trashcan.remove();
+  }
+  group.getElementByID('donebut').remove();
 }
 
 function openTabs(tabName){
