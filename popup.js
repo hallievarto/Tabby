@@ -54,6 +54,14 @@ function onError(error) {
     myNewBox.setAttribute('class', 'myBoxes');
     myNewBox.setAttribute('id', group)
 
+    // add settings buttton
+    let settings = document.createElement("input");
+    settings.setAttribute('id', 'settings');
+    settings.setAttribute('type', 'image');
+    settings.setAttribute('src', 'images/settings.png');
+    settings.setAttribute('class', 'settings');
+    myNewBox.appendChild(settings);
+
     // create the title to the box and append it to the new div
     let myName = document.createElement("p")
     myName.setAttribute('id', 'myGroupName')
@@ -76,11 +84,16 @@ function onError(error) {
     for (i = 0; i < items[group]['titles'].length; i++ ) {
       let link = document.createElement("div")
       link.innerHTML = items[group]['titles'][i]
+      link.setAttribute('class', 'myLinks');
       link.setAttribute('id', 'myLinks');
       myNewBox.appendChild(link)
     }
 
     document.getElementById("myGroups").appendChild(myNewBox);
+
+    settings.addEventListener("click", function(){
+      settingsOptions()
+    });
 
     openButton.addEventListener("click", function(){
       openTabs(myNewBox.id)
@@ -142,6 +155,13 @@ function submitNewGroup(){
     myNewBox.setAttribute('class', 'myBoxes');
     myNewBox.setAttribute('id', tabName)
 
+    // add settings buttton
+    let settings = document.createElement("input");
+    settings.setAttribute('id', 'settings');
+    settings.setAttribute('type', 'image');
+    settings.setAttribute('src', 'images/settings.png');
+    myNewBox.appendChild(settings);
+
     // create the title to the box and append it to the new div
     let myName = document.createElement("p")
     myName.setAttribute('id', 'myGroupName')
@@ -164,6 +184,7 @@ function submitNewGroup(){
       if (cb.checked) {
         let link = document.createElement("div")
         link.innerHTML = master['currTabTitles'][i]
+        link.setAttribute('class', 'myLinks');
         link.setAttribute('id', 'myLinks');
         // link.setAttribute('href', master['currTabUrls'][i])
         myNewBox.appendChild(link)
@@ -171,6 +192,10 @@ function submitNewGroup(){
     }
 
     document.getElementById("myGroups").appendChild(myNewBox);
+
+    settings.addEventListener("click", function(){
+      settingsOptions()
+    });
 
     openButton.addEventListener("click", function(){
       openTabs(myNewBox.id)
@@ -181,6 +206,26 @@ function submitNewGroup(){
   }
   
 
+}
+
+function settingsOptions(){
+  const curLinks = document.getElementsByClassName('myLinks');
+  console.log(curLinks)
+  for(var i = 0; i < curLinks.length; i++){
+    let trash = document.createElement("input");
+    trash.setAttribute('id', 'trash');
+    trash.setAttribute('type', 'image');
+    trash.setAttribute('src', 'images/trash.png');
+    curLinks[i].appendChild(trash);
+  }
+  
+  trash.addEventListener("click", function(){
+    deleteItem();
+  })
+}
+
+function deleteItem(){
+  console.log('to do');
 }
 
 function openTabs(tabName){
@@ -227,7 +272,6 @@ addTo.addEventListener("click", async() =>{
   //console.log(second)
   //console.log(theBox)
   for(var i = 0; i < second.length; i++) {
-    console.log('this is where to look')
     console.log(second[i].firstChild.innerText)
     if (document.body.contains(document.getElementById(second[i].firstChild.innerText + 'List'))) {
       console.log('group already made')
@@ -288,6 +332,7 @@ document.body.addEventListener( 'click', function ( event ) {
             let link = document.createElement("div")
             link.innerHTML = master['currTabTitles'][i]
             link.setAttribute('id', 'myLinks');
+            link.setAttribute('class', 'myLinks');
             // myNewBox.appendChild(link)
             console.log(tabGroupName)
             document.getElementById(tabGroupName).appendChild(link)
