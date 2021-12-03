@@ -56,10 +56,10 @@ function onError(error) {
 
     // add settings buttton
     let settings = document.createElement("input");
-    settings.setAttribute('id', 'settings');
+    settings.setAttribute('class', 'settings');
     settings.setAttribute('type', 'image');
     settings.setAttribute('src', 'images/settings.png');
-    settings.setAttribute('class', 'settings');
+    settings.setAttribute('id', group);
     myNewBox.appendChild(settings);
 
     // create the title to the box and append it to the new div
@@ -92,7 +92,7 @@ function onError(error) {
     document.getElementById("myGroups").appendChild(myNewBox);
 
     settings.addEventListener("click", function(){
-      settingsOptions(group)
+      settingsOptions(settings.id)
     });
 
     openButton.addEventListener("click", function(){
@@ -157,7 +157,8 @@ function submitNewGroup(){
 
     // add settings buttton
     let settings = document.createElement("input");
-    settings.setAttribute('id', 'settings');
+    settings.setAttribute('class', 'settings');
+    settings.setAttribute('id', tabName);
     settings.setAttribute('type', 'image');
     settings.setAttribute('src', 'images/settings.png');
     myNewBox.appendChild(settings);
@@ -186,6 +187,7 @@ function submitNewGroup(){
         link.innerHTML = master['currTabTitles'][i]
         link.setAttribute('class', 'myLinks');
         link.setAttribute('id', 'myLinks');
+        link.setAttribute('id', 'master["currTabTitles"][i]');
         // link.setAttribute('href', master['currTabUrls'][i])
         myNewBox.appendChild(link)
       }
@@ -194,7 +196,7 @@ function submitNewGroup(){
     document.getElementById("myGroups").appendChild(myNewBox);
 
     settings.addEventListener("click", function(){
-      settingsOptions(tabname)
+      settingsOptions(settings.id)
     });
 
     openButton.addEventListener("click", function(){
@@ -209,6 +211,7 @@ function submitNewGroup(){
 }
 
 function settingsOptions(tabname){
+  console.log(tabname);
   const group = document.getElementById(tabname);
   const curLinks = document.getElementById(tabname).getElementsByClassName('myLinks');
   console.log(curLinks)
@@ -219,13 +222,13 @@ function settingsOptions(tabname){
     trashIcon.setAttribute('type', 'image');
     trashIcon.setAttribute('src', 'images/trash.png');
     curLinks[i].appendChild(trashIcon);
-    const tabname = curLinks[i].innerHTML;
+    const tabname = curLinks[i];
     trashIcon.addEventListener("click", function(){
       deleteItem(tabname);
     })
   }
   let done = document.createElement("button");
-  done.setAttribute('id', 'donebut')
+  done.setAttribute('class', 'donebut')
   done.innerHTML = "DONE";
   group.appendChild(done);
 
@@ -237,18 +240,20 @@ function settingsOptions(tabname){
 function deleteItem(item){
   console.log('deleting...');
   console.log(item);
+  item.remove();
   
 }
 
 function doneSettings(tabname){
+  console.log(tabname);
   const group = document.getElementById(tabname);
   const curLinks = document.getElementById(tabname).getElementsByClassName('myLinks');
   console.log(curLinks);
   for(var i = 0; i < curLinks.length; i++){
-    const trashcan = document.curLinks[i].getElementByID('trash');
+    const trashcan = curLinks[i].querySelector('.trash');
     trashcan.remove();
   }
-  group.getElementByID('donebut').remove();
+  group.querySelector('.donebut').remove();
 }
 
 function openTabs(tabName){
@@ -279,7 +284,6 @@ function deleteGroup(group){
    
    for (var i = 0; i < nameList.length; ++i){
      if (nameList[i] == group){
-       console.log("MATCH");
        nameList.splice(i,1);
      }
    }

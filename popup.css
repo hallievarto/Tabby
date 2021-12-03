@@ -197,7 +197,7 @@ h2 {
     margin-top: 5px;
   }
 
-  #settings {
+  .settings {
     position: absolute;
     text-align: right;
     top:10px;
