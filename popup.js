@@ -82,11 +82,14 @@ function onError(error) {
     myNewBox.appendChild(deleteButton)
 
     for (i = 0; i < items[group]['titles'].length; i++ ) {
-      let link = document.createElement("div")
-      link.innerHTML = items[group]['titles'][i]
-      link.setAttribute('class', 'myLinks');
-      link.setAttribute('id', 'myLinks');
-      myNewBox.appendChild(link)
+      let outerLink = document.createElement("a");
+      let innerLink = document.createElement("div")
+      outerLink.setAttribute('href', items[group]['urls'][i]);
+      innerLink.innerHTML = items[group]['titles'][i];
+      innerLink.setAttribute('class', 'myLinks');
+      innerLink.setAttribute('id', 'myLinks');
+      outerLink.appendChild(innerLink);
+      myNewBox.appendChild(outerLink);
     }
 
     document.getElementById("myGroups").appendChild(myNewBox);
@@ -322,6 +325,7 @@ addTo.addEventListener("click", async() =>{
 
 // listener to add to a curr group
 document.body.addEventListener( 'click', function ( event ) {
+  console.log('im in add to curr');
   if( event.target.className == 'existingGroups' ) {
     var tabGroupName =  event.target.innerText;
     console.log('this is what ')
