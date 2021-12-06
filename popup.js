@@ -311,9 +311,9 @@ addTo.addEventListener("click", async() =>{
     } else {
       console.log('group on drop down menu')
       let link = document.createElement("a");
-      link.setAttribute('id', second[i].firstChild.innerText + 'List');
+      link.setAttribute('id', second[i].firstChild.id);
       link.setAttribute('class', 'existingGroups');
-      link.innerHTML = second[i].firstChild.innerText;
+      link.innerHTML = second[i].firstChild.id;
       document.getElementById("myDropdown").appendChild(link);
     }
   }
