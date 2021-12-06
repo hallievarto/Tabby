@@ -204,6 +204,7 @@ function submitNewGroup(){
       openTabs(myNewBox.id)
     });
     deleteButton.addEventListener("click", function(){
+      console.log("CHECK")
       deleteGroup(myNewBox.id)
     });
   }
@@ -213,10 +214,12 @@ function submitNewGroup(){
 
 function settingsOptions(tabname){
   if(!settingsShown) {
-    console.log(tabname);
+    console.log("NAME OF TAB", tabname);
     const group = document.getElementById(tabname);
     const curLinks = document.getElementById(tabname).getElementsByClassName('myLinks');
-    console.log(curLinks)
+    groupName = group.id
+    // console.log(curLinks)
+    
     for(var i = 0; i < curLinks.length; i++){
       let trashIcon = document.createElement("input");
       trashIcon.setAttribute('class', 'trash');
@@ -226,7 +229,8 @@ function settingsOptions(tabname){
       curLinks[i].appendChild(trashIcon);
       const tabname = curLinks[i];
       trashIcon.addEventListener("click", function(){
-        deleteItem(tabname);
+        console.log("NAME OF LINK TO DELETE", tabname.textContent);
+        deleteItem(tabname,tabname.textContent,groupName);
       })
     }
     let done = document.createElement("button");
@@ -242,10 +246,51 @@ function settingsOptions(tabname){
   }
 }
 
-function deleteItem(item){
+async function deleteItem(item,specificLinkName,groupName){
   console.log('deleting...');
   console.log(item);
   item.remove();
+  let index = 0;
+  let titleList = [];
+  let urlList = [];
+
+  var p = new Promise(function(resolve, reject){
+    chrome.storage.local.get(null, function(items) {
+    console.log("CHECKING",items[groupName]['titles']);
+    titleList = items[groupName]['titles'];
+    urlList = items[groupName]['urls'];
+    console.log('ORIGINAL TITLES', titleList)
+    console.log('ORIGINAL URLS', urlList)
+    resolve(items)
+    })
+  });
+  const result = await p;
+  // p.then(console.log("did this work", p));
+  console.log("did this work", p )
+  console.log('checking', titleList)
+  for (var i = 0; i < titleList.length; ++i){
+    if (titleList[i] == specificLinkName){
+      index = i;
+      titleList.splice(i,1);
+      urlList.splice(i,1);
+      
+    }
+  }
+  console.log("SHOULD BE REMOVED",titleList,urlList);
+  
+  console.log("HELLO@", titleList)
+  var save = {}
+  // save[tabName] = currTabs
+  save_dict = {}
+  save_dict['urls'] = urlList
+  save_dict['titles'] = titleList
+  save[groupName] = save_dict
+  chrome.storage.local.set(save, function(){
+    console.log(groupName)
+  });
+  chrome.storage.local.get(save, function (obj) {
+    console.log(obj);
+  });
   
 }
 
