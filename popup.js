@@ -228,7 +228,8 @@ function settingsOptions(tabname){
     })
   }
   let done = document.createElement("button");
-  done.setAttribute('class', 'donebut')
+  done.setAttribute('class', 'donebut');
+  done.setAttribute('id', 'selectButt');
   done.innerHTML = "DONE";
   group.appendChild(done);
 
