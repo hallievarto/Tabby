@@ -305,13 +305,13 @@ addTo.addEventListener("click", async() =>{
   //console.log(second)
   //console.log(theBox)
   for(var i = 0; i < second.length; i++) {
-    console.log(second[i].firstChild.innerText)
-    if (document.body.contains(document.getElementById(second[i].firstChild.innerText + 'List'))) {
+    console.log(second[i].firstChild.id)
+    if (document.body.contains(document.getElementById(second[i].firstChild.id + 'List'))) {
       console.log('group already made')
     } else {
       console.log('group on drop down menu')
       let link = document.createElement("a");
-      link.setAttribute('id', second[i].firstChild.id);
+      link.setAttribute('id', second[i].firstChild.id + 'List');
       link.setAttribute('class', 'existingGroups');
       link.innerHTML = second[i].firstChild.id;
       document.getElementById("myDropdown").appendChild(link);
@@ -363,10 +363,10 @@ document.body.addEventListener( 'click', function ( event ) {
   
   
             let link = document.createElement("div")
+            console.log(master['currTabTitles'][i]);
             link.innerHTML = master['currTabTitles'][i]
             link.setAttribute('id', 'myLinks');
             link.setAttribute('class', 'myLinks');
-            // myNewBox.appendChild(link)
             console.log(tabGroupName)
             document.getElementById(tabGroupName).appendChild(link)
           }
