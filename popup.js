@@ -120,6 +120,7 @@ createGroup.addEventListener("click", async() =>{
   document.getElementById("textbox").innerHTML = "<input type='text' id='GName' placeholder='type group name' /> <button id='NG'> Submit </button>"
   document.getElementById("NG").onclick = submitNewGroup
 })
+let settingsShown = false;
 
 function submitNewGroup(){
 
@@ -211,31 +212,34 @@ function submitNewGroup(){
 }
 
 function settingsOptions(tabname){
-  console.log(tabname);
-  const group = document.getElementById(tabname);
-  const curLinks = document.getElementById(tabname).getElementsByClassName('myLinks');
-  console.log(curLinks)
-  for(var i = 0; i < curLinks.length; i++){
-    let trashIcon = document.createElement("input");
-    trashIcon.setAttribute('class', 'trash');
-    trashIcon.setAttribute('id', 'trash');
-    trashIcon.setAttribute('type', 'image');
-    trashIcon.setAttribute('src', 'images/trash.png');
-    curLinks[i].appendChild(trashIcon);
-    const tabname = curLinks[i];
-    trashIcon.addEventListener("click", function(){
-      deleteItem(tabname);
+  if(!settingsShown) {
+    console.log(tabname);
+    const group = document.getElementById(tabname);
+    const curLinks = document.getElementById(tabname).getElementsByClassName('myLinks');
+    console.log(curLinks)
+    for(var i = 0; i < curLinks.length; i++){
+      let trashIcon = document.createElement("input");
+      trashIcon.setAttribute('class', 'trash');
+      trashIcon.setAttribute('id', 'trash');
+      trashIcon.setAttribute('type', 'image');
+      trashIcon.setAttribute('src', 'images/trash.png');
+      curLinks[i].appendChild(trashIcon);
+      const tabname = curLinks[i];
+      trashIcon.addEventListener("click", function(){
+        deleteItem(tabname);
+      })
+    }
+    let done = document.createElement("button");
+    done.setAttribute('class', 'donebut');
+    done.setAttribute('id', 'selectButt');
+    done.innerHTML = "DONE";
+    group.appendChild(done);
+    settingsShown = true;
+
+    done.addEventListener("click", function(){
+      doneSettings(tabname);
     })
   }
-  let done = document.createElement("button");
-  done.setAttribute('class', 'donebut');
-  done.setAttribute('id', 'selectButt');
-  done.innerHTML = "DONE";
-  group.appendChild(done);
-
-  done.addEventListener("click", function(){
-    doneSettings(tabname);
-  })
 }
 
 function deleteItem(item){
@@ -254,6 +258,7 @@ function doneSettings(tabname){
     const trashcan = curLinks[i].querySelector('.trash');
     trashcan.remove();
   }
+  settingsShown = false;
   group.querySelector('.donebut').remove();
 }
 
