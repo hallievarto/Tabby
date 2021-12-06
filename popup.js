@@ -82,11 +82,14 @@ function onError(error) {
     myNewBox.appendChild(deleteButton)
 
     for (i = 0; i < items[group]['titles'].length; i++ ) {
-      let link = document.createElement("div")
-      link.innerHTML = items[group]['titles'][i]
-      link.setAttribute('class', 'myLinks');
-      link.setAttribute('id', 'myLinks');
-      myNewBox.appendChild(link)
+      //let outerLink = document.createElement("a");
+      let innerLink = document.createElement("div")
+      //outerLink.setAttribute('href', items[group]['urls'][i]);
+      innerLink.innerHTML = items[group]['titles'][i];
+      innerLink.setAttribute('class', 'myLinks');
+      innerLink.setAttribute('id', 'myLinks');
+      //outerLink.appendChild(innerLink);
+      myNewBox.appendChild(innerLink);
     }
 
     document.getElementById("myGroups").appendChild(myNewBox);
@@ -350,15 +353,15 @@ addTo.addEventListener("click", async() =>{
   //console.log(second)
   //console.log(theBox)
   for(var i = 0; i < second.length; i++) {
-    console.log(second[i].firstChild.innerText)
-    if (document.body.contains(document.getElementById(second[i].firstChild.innerText + 'List'))) {
+    console.log(second[i].firstChild.id)
+    if (document.body.contains(document.getElementById(second[i].firstChild.id + 'List'))) {
       console.log('group already made')
     } else {
       console.log('group on drop down menu')
       let link = document.createElement("a");
-      link.setAttribute('id', second[i].firstChild.innerText + 'List');
+      link.setAttribute('id', second[i].firstChild.id + 'List');
       link.setAttribute('class', 'existingGroups');
-      link.innerHTML = second[i].firstChild.innerText;
+      link.innerHTML = second[i].firstChild.id;
       document.getElementById("myDropdown").appendChild(link);
     }
   }
@@ -367,6 +370,7 @@ addTo.addEventListener("click", async() =>{
 
 // listener to add to a curr group
 document.body.addEventListener( 'click', function ( event ) {
+  console.log('im in add to curr');
   if( event.target.className == 'existingGroups' ) {
     var tabGroupName =  event.target.innerText;
     console.log('this is what ')
@@ -408,10 +412,10 @@ document.body.addEventListener( 'click', function ( event ) {
   
   
             let link = document.createElement("div")
+            console.log(master['currTabTitles'][i]);
             link.innerHTML = master['currTabTitles'][i]
             link.setAttribute('id', 'myLinks');
             link.setAttribute('class', 'myLinks');
-            // myNewBox.appendChild(link)
             console.log(tabGroupName)
             document.getElementById(tabGroupName).appendChild(link)
           }
