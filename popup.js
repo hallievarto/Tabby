@@ -82,14 +82,14 @@ function onError(error) {
     myNewBox.appendChild(deleteButton)
 
     for (i = 0; i < items[group]['titles'].length; i++ ) {
-      let outerLink = document.createElement("a");
+      //let outerLink = document.createElement("a");
       let innerLink = document.createElement("div")
-      outerLink.setAttribute('href', items[group]['urls'][i]);
+      //outerLink.setAttribute('href', items[group]['urls'][i]);
       innerLink.innerHTML = items[group]['titles'][i];
       innerLink.setAttribute('class', 'myLinks');
       innerLink.setAttribute('id', 'myLinks');
-      outerLink.appendChild(innerLink);
-      myNewBox.appendChild(outerLink);
+      //outerLink.appendChild(innerLink);
+      myNewBox.appendChild(innerLink);
     }
 
     document.getElementById("myGroups").appendChild(myNewBox);
